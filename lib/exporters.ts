@@ -105,3 +105,44 @@ export function downloadTextFile(
   document.body.removeChild(a);
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
+
+/**
+ * Converts results to plain text format (one card per line).
+ */
+export function resultsToTXT(results: CardResult[]): string {
+  return results.map((r) => r.card.replace(/\|/g, "|")).join("\n");
+}
+
+/**
+ * Generates a simple XML Spreadsheet (Excel-compatible .xls) from results.
+ * This avoids needing a heavy library like xlsx.
+ */
+export function resultsToExcel(results: CardResult[]): string {
+  const header = ["Number", "MM", "YYYY", "CVV", "Status", "Bank", "Brand", "Country", "Category", "Message"];
+
+  const escapeXml = (s: string) =>
+    s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+  const rows = results.map((r) => {
+    const [number, mm, yyyy, cvv] = r.card.split("|");
+    return [number, mm, yyyy, cvv, r.status, r.bank, r.brand, r.country, r.category, r.message];
+  });
+
+  const xmlRows = [header, ...rows]
+    .map(
+      (row) =>
+        `<Row>${row.map((cell) => `<Cell><Data ss:Type="String">${escapeXml(cell ?? "")}</Data></Cell>`).join("")}</Row>`,
+    )
+    .join("\n");
+
+  return `<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+<Worksheet ss:Name="Results">
+<Table>
+${xmlRows}
+</Table>
+</Worksheet>
+</Workbook>`;
+}

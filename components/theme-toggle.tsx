@@ -25,7 +25,7 @@ export function ThemeToggle() {
         size="icon"
         onClick={toggle}
         aria-label="Toggle theme"
-        className="relative overflow-hidden"
+        className="relative size-9 rounded-lg overflow-hidden"
       >
         <AnimatePresence mode="wait" initial={false}>
           {isDark ? (

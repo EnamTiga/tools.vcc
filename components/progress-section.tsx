@@ -19,8 +19,7 @@ interface ProgressSectionProps {
 export function ProgressSection({
   stats,
   status,
-  elapsedMs,
-  batchSize,
+  elapsedMs, 
 }: ProgressSectionProps) {
   if (status === "idle" && stats.total === 0) {
     return null;
@@ -52,7 +51,7 @@ export function ProgressSection({
       initial="hidden"
       animate="visible"
     >
-      <Card className="border-border/60 bg-card/60 backdrop-blur-xl overflow-hidden">
+      <Card className="border-border/60 bg-card/60 backdrop-blur-xl overflow-hidden py-0">
         <div
           aria-hidden="true"
           className="h-0.5 bg-linear-to-r from-transparent via-primary/50 to-transparent"
@@ -107,18 +106,7 @@ export function ProgressSection({
             <Stat label="Progress" value={pct} suffix="%" />
             <Stat label="Elapsed" value={seconds} suffix="s" />
             <Stat label="Rate" value={rate} suffix="/s" />
-          </div>
-
-          {status === "running" && (
-            <motion.p
-              className="mt-3 text-center text-[10px] text-muted-foreground"
-              initial={{ opacity: 0, y: 4 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              Processing {batchSize} cards in parallel per batch
-            </motion.p>
-          )}
+          </div> 
         </CardContent>
       </Card>
     </motion.div>

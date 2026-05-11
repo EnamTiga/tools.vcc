@@ -22,10 +22,18 @@ export function SiteFooter() {
           >
             <HeartIcon className="size-3 fill-rose-500 text-rose-500" />
           </motion.span>{" "}
-          using Next.js, shadcn/ui & Tailwind CSS
+          by{" "}
+          <a
+            href="https://whatsapp.com/channel/0029Vb87FE4IiRorN9kW6b3Z"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-foreground hover:text-primary transition-colors"
+          >
+            codeprem
+          </a>
         </p>
         <p>
-          © {new Date().getFullYear()} BIN Tools - For educational & testing use only
+          © {new Date().getFullYear()} BIN Tools — For educational & testing use only
         </p>
       </div>
     </motion.footer>

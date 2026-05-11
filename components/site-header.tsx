@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "motion/react";
-import { CreditCardIcon, Code2Icon } from "lucide-react";
+import { MessageCircleIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -24,8 +24,8 @@ export function SiteHeader() {
             transition={{ duration: 0.3, ease: easeOutExpo }}
           >
             <div className="absolute inset-0 rounded-lg bg-linear-to-br from-primary to-chart-4 opacity-50 blur-md transition-opacity group-hover:opacity-80" />
-            <div className="relative flex size-9 items-center justify-center rounded-lg bg-linear-to-br from-primary via-primary to-chart-4 text-primary-foreground shadow-md">
-              <CreditCardIcon className="size-5" />
+            <div className="relative flex size-9 items-center justify-center rounded-lg shadow-md overflow-hidden">
+              <img src="/logo.svg" alt="BIN Tools" className="size-9" />
             </div>
           </motion.div>
           <div className="flex flex-col">
@@ -44,23 +44,25 @@ export function SiteHeader() {
           </Badge>
         </Link>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1">
           <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
             <Button
               variant="ghost"
               size="icon"
+              className="size-9 rounded-lg"
               asChild
-              aria-label="View on GitHub"
+              aria-label="Join WhatsApp Channel"
             >
               <a
-                href="https://github.com"
+                href="https://whatsapp.com/channel/0029Vb87FE4IiRorN9kW6b3Z"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Code2Icon className="size-4" />
+                <MessageCircleIcon className="size-[18px]" />
               </a>
             </Button>
           </motion.div>
+          <div className="mx-1 h-5 w-px bg-border/60" />
           <ThemeToggle />
         </div>
       </div>

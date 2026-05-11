@@ -27,6 +27,7 @@ export function StatsDashboard({ stats }: StatsDashboardProps) {
       bgClass: "from-sky-500/10 to-blue-500/5",
       ringClass: "ring-sky-500/20",
       glow: "shadow-sky-500/10",
+      pulse: false,
     },
     {
       label: "Live",
@@ -46,6 +47,7 @@ export function StatsDashboard({ stats }: StatsDashboardProps) {
       bgClass: "from-rose-500/10 to-red-500/5",
       ringClass: "ring-rose-500/20",
       glow: "shadow-rose-500/10",
+      pulse: false,
     },
     {
       label: "Unknown",
@@ -55,12 +57,13 @@ export function StatsDashboard({ stats }: StatsDashboardProps) {
       bgClass: "from-amber-500/10 to-yellow-500/5",
       ringClass: "ring-amber-500/20",
       glow: "shadow-amber-500/10",
+      pulse: false,
     },
   ];
 
   return (
     <motion.div
-      className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:gap-4"
+      className="grid grid-cols-2 gap-3 sm:grid-cols-4"
       variants={stagger(0.05, 0.08)}
       initial="hidden"
       animate="visible"
@@ -74,7 +77,7 @@ export function StatsDashboard({ stats }: StatsDashboardProps) {
         >
           <Card
             className={cn(
-              "relative overflow-hidden bg-card/60 backdrop-blur-xl ring-1 transition-shadow hover:shadow-lg",
+              "relative overflow-hidden bg-card/60 backdrop-blur-xl ring-1 transition-shadow hover:shadow-lg py-0",
               item.ringClass,
               item.glow,
             )}
@@ -96,15 +99,13 @@ export function StatsDashboard({ stats }: StatsDashboardProps) {
                   : undefined
               }
             />
-            <CardContent className="relative p-4 md:p-5">
+            <CardContent className="relative p-4">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                   {item.label}
                 </span>
                 <motion.div
-                  className={cn(
-                    "flex size-7 items-center justify-center rounded-md bg-background/60",
-                  )}
+                  className="flex size-6 items-center justify-center rounded-md bg-background/60"
                   animate={item.pulse ? { scale: [1, 1.15, 1] } : undefined}
                   transition={
                     item.pulse
@@ -112,31 +113,19 @@ export function StatsDashboard({ stats }: StatsDashboardProps) {
                       : undefined
                   }
                 >
-                  <item.icon className={cn("size-4", item.iconClass)} />
+                  <item.icon className={cn("size-3.5", item.iconClass)} />
                 </motion.div>
               </div>
-              <div className="mt-2 flex items-baseline gap-2">
-                <span className="text-3xl font-bold tabular-nums tracking-tight">
+              <div className="mt-2 flex items-baseline gap-1.5">
+                <span className="text-2xl font-bold tabular-nums tracking-tight">
                   <CountUp value={item.value} />
                 </span>
-                {item.label !== "Total" && stats.total > 0 && (
-                  <span className="text-xs text-muted-foreground">
+                {stats.total > 0 && (
+                  <span className="text-[11px] text-muted-foreground">
                     / {stats.total}
                   </span>
                 )}
               </div>
-              {item.label === "Live" && stats.total > 0 && (
-                <div className="mt-1.5 text-[10px] text-muted-foreground">
-                  {((stats.live / stats.total) * 100).toFixed(1)}% hit rate
-                </div>
-              )}
-              {item.label === "Total" && (
-                <div className="mt-1.5 text-[10px] text-muted-foreground">
-                  {stats.done > 0 && stats.total > 0
-                    ? `${stats.done} processed`
-                    : "Ready to start"}
-                </div>
-              )}
             </CardContent>
           </Card>
         </motion.div>

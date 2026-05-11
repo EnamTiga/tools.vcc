@@ -9,6 +9,7 @@ import {
   CheckIcon,
   CreditCardIcon,
   InboxIcon,
+  DownloadIcon,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -31,16 +32,20 @@ import {
 } from "@/components/ui/table";
 import { Separator } from "@/components/ui/separator";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import type { CardResult } from "@/lib/types";
 import {
   copyToClipboard,
   downloadTextFile,
   resultsToCSV,
   resultsToTSV,
+  resultsToTXT,
+  resultsToExcel,
 } from "@/lib/exporters";
 import { cn } from "@/lib/utils";
 import { fadeInUp, easeOutExpo, slideInFromRight } from "@/lib/motion";
@@ -83,6 +88,24 @@ export function LiveCardsTable({ liveResults }: LiveCardsTableProps) {
     toast.success(`Exported ${liveResults.length} cards as CSV`);
   };
 
+  const handleExportTXT = () => {
+    downloadTextFile(
+      resultsToTXT(liveResults),
+      `live-cards-${timestamp()}.txt`,
+      "text/plain",
+    );
+    toast.success(`Exported ${liveResults.length} cards as TXT`);
+  };
+
+  const handleExportExcel = () => {
+    downloadTextFile(
+      resultsToExcel(liveResults),
+      `live-cards-${timestamp()}.xls`,
+      "application/vnd.ms-excel",
+    );
+    toast.success(`Exported ${liveResults.length} cards as Excel`);
+  };
+
   return (
     <motion.div
       variants={fadeInUp}
@@ -121,59 +144,60 @@ export function LiveCardsTable({ liveResults }: LiveCardsTableProps) {
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <motion.div whileTap={{ scale: 0.92 }}>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={handleCopy}
-                    disabled={empty}
-                    className="gap-1.5"
-                  >
-                    {copied ? (
-                      <>
-                        <CheckIcon className="size-3.5 text-emerald-500" />
-                        Copied
-                      </>
-                    ) : (
-                      <>
-                        <CopyIcon className="size-3.5" />
-                        Copy
-                      </>
-                    )}
-                  </Button>
-                </motion.div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p className="text-xs">Copy as TSV (Tab-Separated)</p>
-              </TooltipContent>
-            </Tooltip>
+            <motion.div whileTap={{ scale: 0.92 }}>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={handleCopy}
+                disabled={empty}
+                className="gap-1.5"
+              >
+                {copied ? (
+                  <>
+                    <CheckIcon className="size-3.5 text-emerald-500" />
+                    Copied
+                  </>
+                ) : (
+                  <>
+                    <CopyIcon className="size-3.5" />
+                    Copy
+                  </>
+                )}
+              </Button>
+            </motion.div>
 
-            <motion.div whileTap={{ scale: 0.92 }}>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={handleExportTSV}
-                disabled={empty}
-                className="gap-1.5"
-              >
-                <FileTextIcon className="size-3.5" />
-                TSV
-              </Button>
-            </motion.div>
-            <motion.div whileTap={{ scale: 0.92 }}>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={handleExportCSV}
-                disabled={empty}
-                className="gap-1.5"
-              >
-                <FileSpreadsheetIcon className="size-3.5" />
-                CSV
-              </Button>
-            </motion.div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={empty}
+                  className="gap-1.5"
+                >
+                  <DownloadIcon className="size-3.5" />
+                  Download
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={handleExportCSV}>
+                  <FileSpreadsheetIcon className="size-3.5" />
+                  CSV
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleExportTSV}>
+                  <FileTextIcon className="size-3.5" />
+                  TSV
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleExportTXT}>
+                  <FileTextIcon className="size-3.5" />
+                  TXT
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleExportExcel}>
+                  <FileSpreadsheetIcon className="size-3.5" />
+                  Excel (.xls)
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </CardHeader>
 
@@ -246,13 +270,9 @@ function CardRow({ index, result, custom }: { index: number; result: CardResult;
       </TableCell>
       <TableCell className="font-mono whitespace-nowrap">
         <div className="flex items-center gap-2">
-          <span className="tabular-nums">{num}</span>
-          <span className="text-muted-foreground text-[10px]">
-            {mm}/{yy}
-          </span>
-          <Badge variant="outline" className="text-[9px] h-4 font-mono">
-            CVV {cvv}
-          </Badge>
+          <CopyCell value={num as string} label="Number" />
+          <CopyCell value={`${mm}/${yy}`} label="Expiry" />
+          <CopyCell value={cvv as string} label="CVV" />
         </div>
       </TableCell>
       <TableCell className="text-xs">
@@ -307,4 +327,27 @@ function timestamp(): string {
   return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}-${pad(
     d.getHours(),
   )}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
+}
+
+function CopyCell({ value, label }: { value: string; label: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(value);
+    toast.success(`${label} copied!`);
+    setCopied(true);
+  };
+
+  return (
+    <span
+      className={cn(
+        "tabular-nums cursor-pointer transition-colors",
+        copied ? "text-emerald-500" : "hover:text-emerald-500",
+      )}
+      onClick={handleCopy}
+      title={`Click to copy ${label}`}
+    >
+      {value}
+    </span>
+  );
 }

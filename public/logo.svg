@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#e0e7ff" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="check" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="240" fill="url(#bg)"/>
+  <!-- Card shape -->
+  <rect x="120" y="160" width="220" height="150" rx="16" fill="url(#card)" opacity="0.95"/>
+  <!-- Card chip -->
+  <rect x="152" y="192" width="40" height="30" rx="6" fill="#f59e0b" opacity="0.8"/>
+  <line x1="152" y1="207" x2="192" y2="207" stroke="#d97706" stroke-width="2"/>
+  <line x1="172" y1="192" x2="172" y2="222" stroke="#d97706" stroke-width="2"/>
+  <!-- Card lines -->
+  <rect x="152" y="240" width="120" height="8" rx="4" fill="#6366f1" opacity="0.3"/>
+  <rect x="152" y="260" width="80" height="8" rx="4" fill="#6366f1" opacity="0.2"/>
+  <rect x="152" y="280" width="60" height="8" rx="4" fill="#6366f1" opacity="0.15"/>
+  <!-- Checkmark circle -->
+  <circle cx="340" cy="300" r="56" fill="url(#check)"/>
+  <polyline points="314,300 334,320 366,284" fill="none" stroke="white" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

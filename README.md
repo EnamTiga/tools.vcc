@@ -1,35 +1,64 @@
-# BIN Tools
+<p align="center">
+  <img src="./public/logo.svg" alt="BIN Tools Logo" width="120" height="120" />
+</p>
 
-Modern **BIN generator & card validator** built with Next.js 16, shadcn/ui, and Tailwind 4.
+<h1 align="center">BIN Tools</h1>
 
-Generate credit card numbers from a BIN prefix using the Luhn algorithm, then validate them in parallel batches via [chkr.cc](https://chkr.cc) with a live dashboard and instant export (TSV / CSV / clipboard).
+<p align="center">
+  Modern <strong>BIN generator & card validator</strong> built with Next.js 16, shadcn/ui, Tailwind 4, and Motion.
+</p>
+
+<p align="center">
+  <a href="#features">Features</a> •
+  <a href="#stack">Stack</a> •
+  <a href="#getting-started">Getting Started</a> •
+  <a href="#deploying-to-vercel">Deploy</a> •
+  <a href="#license">License</a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-16-black?logo=next.js" alt="Next.js" />
+  <img src="https://img.shields.io/badge/React-19-61dafb?logo=react" alt="React" />
+  <img src="https://img.shields.io/badge/TypeScript-5.9-3178c6?logo=typescript" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-4-06b6d4?logo=tailwindcss" alt="Tailwind" />
+  <img src="https://img.shields.io/badge/License-MIT-green" alt="License" />
+</p>
+
+---
 
 > 🌐 Language: **English** · [Bahasa Indonesia](./README.id.md)
 
 ---
 
-## ✨ Features
+## Features
 
 - **Luhn generator** with wildcard `x` support (e.g. `625817xxxxxxxxxx`)
-- **Optional overrides** for month, year, and CVV - blank fields pick random values, filled fields are used as-is
+- **Optional overrides** for month, year, and CVV — blank fields pick random values, filled fields are used as-is
 - **Parallel validation** configured via environment variables (not exposed in the UI)
-- **Real-time UI**: live stats dashboard, progress bar, and streaming live-cards table
+- **Real-time UI**: live stats dashboard, animated progress bar, and streaming live-cards table
+- **Smooth motion animations** across all components using Motion library
 - **Export** results to TSV, CSV, or copy to clipboard
-- **Dark / light theme** with `D` hotkey
+- **Dark / light theme** with animated toggle
 - **Responsive** layout, glassmorphism cards, animated gradient accents
 - **Server proxy** to avoid browser CORS limitations
+- **Error boundary** for graceful runtime error handling
+- **Unit tested** with Vitest (33 tests covering core logic)
 
-## 🛠 Stack
+## Stack
 
-- **Next.js 16** (App Router, Turbopack, React 19)
-- **shadcn/ui** (style `radix-nova`, base color `mist`)
-- **Tailwind CSS 4**
-- **react-hook-form** + **zod** for validation
-- **sonner** for toasts
-- **next-themes** for theming
-- **lucide-react** for icons
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 16 (App Router, Turbopack, React 19) |
+| UI Components | shadcn/ui (Radix primitives) |
+| Styling | Tailwind CSS 4 |
+| Animations | Motion (Framer Motion successor) |
+| Forms | react-hook-form + zod |
+| Toasts | sonner |
+| Theming | next-themes |
+| Icons | lucide-react |
+| Testing | Vitest + Testing Library |
 
-## 🚀 Getting Started
+## Getting Started
 
 ### 1. Install dependencies
 
@@ -66,26 +95,29 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ### 4. Scripts
 
-| Script           | Description               |
-| ---------------- | ------------------------- |
-| `pnpm dev`       | Dev server with Turbopack |
-| `pnpm build`     | Production build          |
-| `pnpm start`     | Start production server   |
-| `pnpm lint`      | Run ESLint                |
-| `pnpm typecheck` | Run `tsc --noEmit`        |
-| `pnpm format`    | Prettier format           |
+| Script | Description |
+|--------|-------------|
+| `pnpm dev` | Dev server with Turbopack |
+| `pnpm build` | Production build |
+| `pnpm start` | Start production server |
+| `pnpm lint` | Run ESLint |
+| `pnpm typecheck` | Run `tsc --noEmit` |
+| `pnpm format` | Prettier format |
+| `pnpm test` | Run unit tests |
+| `pnpm test:watch` | Run tests in watch mode |
 
-## 🧱 Project Structure
+## Project Structure
 
 ```
 app/
-├── layout.tsx              Metadata, ThemeProvider, Toaster
+├── layout.tsx              Metadata, ThemeProvider, ErrorBoundary, Toaster
 ├── page.tsx                Main dashboard
 ├── globals.css
 └── api/check/route.ts      POST proxy to chkr.cc
 
 components/
 ├── ui/                     shadcn/ui primitives
+├── error-boundary.tsx      React Error Boundary with fallback UI
 ├── site-header.tsx
 ├── site-footer.tsx
 ├── theme-toggle.tsx
@@ -94,21 +126,31 @@ components/
 ├── features-grid.tsx
 ├── stats-dashboard.tsx
 ├── progress-section.tsx
+├── count-up.tsx
 └── live-cards-table.tsx
 
 hooks/
-└── use-bin-checker.ts      State machine + batch orchestration
+├── use-bin-checker.ts      State machine + batch orchestration
+└── use-timer.ts            Reusable elapsed-time tracker
 
 lib/
 ├── types.ts                Shared TypeScript types
 ├── luhn.ts                 Luhn algorithm
 ├── card.ts                 Generation with optional MM/YY/CVV overrides
+├── checker-service.ts      Upstream API communication (service layer)
 ├── api-client.ts           Client-side batched caller
 ├── exporters.ts            TSV/CSV/clipboard helpers
+├── motion.ts               Shared animation variants and easings
 └── env.ts                  Env config with clamping
+
+tests/
+├── setup.ts                Test setup (jest-dom matchers)
+├── luhn.test.ts            Luhn algorithm tests
+├── card.test.ts            Card generation tests
+└── exporters.test.ts       Export utility tests
 ```
 
-## 🌍 Deploying to Vercel
+## Deploying to Vercel
 
 1. Push the repository to GitHub.
 2. [Import the project on Vercel](https://vercel.com/new).
@@ -116,10 +158,10 @@ lib/
 4. **Environment Variables**: copy the values from `.env.example`.
 5. Deploy.
 
-## ⚠️ Disclaimer
+## Disclaimer
 
 This tool is intended for legitimate use: testing your own payment systems, auditing your own BIN database, or educational exploration of the Luhn algorithm. Please use it responsibly and comply with all applicable laws and the terms of service of any API you integrate with.
 
-## 📝 License
+## License
 
-Released for personal use. See `LICENSE` if present.
+This project is licensed under the [MIT License](./LICENSE).

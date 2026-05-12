@@ -33,7 +33,7 @@ export function SiteFooter() {
           </a>
         </p>
         <p>
-          © {new Date().getFullYear()} BIN Tools — For educational & testing use only
+          © {new Date().getFullYear()} BIN Tools - For educational & testing use only
         </p>
       </div>
     </motion.footer>

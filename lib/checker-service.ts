@@ -1,5 +1,5 @@
 /**
- * Checker service — handles communication with the upstream chkr.cc API.
+ * Checker service - handles communication with the upstream chkr.cc API.
  * Extracted from the route handler to maintain single responsibility.
  */
 
@@ -80,7 +80,7 @@ export async function checkCard(card: CardString): Promise<CardResult> {
 
 /**
  * Checks multiple cards in parallel.
- * Each card is checked independently — one failure won't affect others.
+ * Each card is checked independently - one failure won't affect others.
  */
 export async function checkCards(cards: CardString[]): Promise<CardResult[]> {
   return Promise.all(cards.map(checkCard));

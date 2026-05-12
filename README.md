@@ -33,7 +33,7 @@
 ## Features
 
 - **Luhn generator** with wildcard `x` support (e.g. `625817xxxxxxxxxx`)
-- **Optional overrides** for month, year, and CVV — blank fields pick random values, filled fields are used as-is
+- **Optional overrides** for month, year, and CVV - blank fields pick random values, filled fields are used as-is
 - **Parallel validation** configured via environment variables (not exposed in the UI)
 - **Real-time UI**: live stats dashboard, animated progress bar, and streaming live-cards table
 - **Smooth motion animations** across all components using Motion library
@@ -46,17 +46,17 @@
 
 ## Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | Next.js 16 (App Router, Turbopack, React 19) |
-| UI Components | shadcn/ui (Radix primitives) |
-| Styling | Tailwind CSS 4 |
-| Animations | Motion (Framer Motion successor) |
-| Forms | react-hook-form + zod |
-| Toasts | sonner |
-| Theming | next-themes |
-| Icons | lucide-react |
-| Testing | Vitest + Testing Library |
+| Layer         | Technology                                   |
+| ------------- | -------------------------------------------- |
+| Framework     | Next.js 16 (App Router, Turbopack, React 19) |
+| UI Components | shadcn/ui (Radix primitives)                 |
+| Styling       | Tailwind CSS 4                               |
+| Animations    | Motion (Framer Motion successor)             |
+| Forms         | react-hook-form + zod                        |
+| Toasts        | sonner                                       |
+| Theming       | next-themes                                  |
+| Icons         | lucide-react                                 |
+| Testing       | Vitest + Testing Library                     |
 
 ## Getting Started
 
@@ -95,16 +95,16 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ### 4. Scripts
 
-| Script | Description |
-|--------|-------------|
-| `pnpm dev` | Dev server with Turbopack |
-| `pnpm build` | Production build |
-| `pnpm start` | Start production server |
-| `pnpm lint` | Run ESLint |
-| `pnpm typecheck` | Run `tsc --noEmit` |
-| `pnpm format` | Prettier format |
-| `pnpm test` | Run unit tests |
-| `pnpm test:watch` | Run tests in watch mode |
+| Script            | Description               |
+| ----------------- | ------------------------- |
+| `pnpm dev`        | Dev server with Turbopack |
+| `pnpm build`      | Production build          |
+| `pnpm start`      | Start production server   |
+| `pnpm lint`       | Run ESLint                |
+| `pnpm typecheck`  | Run `tsc --noEmit`        |
+| `pnpm format`     | Prettier format           |
+| `pnpm test`       | Run unit tests            |
+| `pnpm test:watch` | Run tests in watch mode   |
 
 ## Project Structure
 
